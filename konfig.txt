@@ -1,0 +1,8 @@
+PGserver
+www.avpsoft.ee
+PGport
+5432
+
+UUENDUS
+www.avpsoft.ee/downloads/kaardid
+

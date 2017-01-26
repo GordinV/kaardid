@@ -1,0 +1,149 @@
+Parameter tcKey
+If Empty (tcKey)
+	tcKey = ''
+Endif
+PUBLIC gnHandle,  gcWindow, opRintform2, gcServer, gcPort, ;
+	ofInder, grEturn, gcKasutaja, gcParool
+
+_screen.WindowState = 2		
+gnPaev = 0
+gcKey = tcKey
+*!*		, oPopup
+gcPrognimi = 'kaardid.EXE'
+gcWinname = ''
+glError = .F.
+gvErsia = 'PG'
+gdKpv = Date()
+gckAsutaja = ''
+Local leRror
+Close Databases All
+Set Udfparms Off
+On Shutdown Quit
+Set Resource Off
+Set Hours To 24
+Set Compatible Off
+Set Null Off
+Set NullDisplay To ''
+Set Autosave On
+Set Point To '.'
+Set Help On
+Set Lock On
+Set Exclusive Off
+Set Multilocks On
+Set Century On
+Set Talk Off
+Set Console Off
+Set Notify Off
+Set Safety Off
+Set Deleted On
+Set Date To German
+SET ANSI ON
+SET EXACT on
+Set Memowidth To 8000
+DO proc/kaardidmenu.mpr
+DO proc/procloekonfiguratsion
+*!*	Use menuitem In 0
+*!*	Use menubar In 0
+
+*IF FILE('konfig.txt')
+* konstant data
+* kas on uuendused
+
+*ENDIF
+
+
+
+*!*	If  .Not. Empty(config.reServed1) .And. File('updater.exe')
+
+*!*		lrEsult = chEckuuendused(config.reServed1)
+*!*		If Used('ajalugu')
+*!*			Use In ajAlugu
+*!*		Endif
+*!*		If Used('uuendus')
+*!*			Use In uuEndus
+*!*		Endif
+*!*		If lrEsult=.T.
+*!*			lnResult = Messagebox(Iif(config.keel=2,  ;
+*!*				'Kas uuenda programm?', 'Обновить приложение?'),  ;
+*!*				0033, 'Uuendamine')
+*!*			If lnResult=1
+*!*				Run /N updater.Exe
+*!*				lqUit = .T.
+*!*			Endif
+*!*		Endif
+*!*	Endif
+lquit = .f.
+If lqUit=.F.
+*!*		Set Sysmenu To
+*!*		Set Sysmenu Automatic
+	DO FORM login TO gnHandle
+	IF !EMPTY(gnHandle)
+*		MESSAGEBOX('Ok')
+		DO FORM menu
+		Read Events
+	ENDIF
+	
+*!*		Set Classlib To Classlib
+*!*		Set Procedure To classes\login
+*!*		olOgin = Createobject('login', tcKey)
+*!*		olOgin.Show()
+*!*		Do case
+*!*			Case config.debug = 0
+*!*				On error do err with program(), lineno(1)
+*!*			Case config.debug = 1
+*!*				On error
+*!*			Case config.debug = 2
+*!*				On error do ferr
+*!*		Endcase
+*!*	*!*		If  .Not. Empty(config.baCkground)
+*!*	*!*			_Screen.Picture = Trim(config.baCkground)
+*!*	*!*		Endif
+*!*		Set Classlib To tools Additive
+*!*		otOols = Createobject('Tools')
+*!*		otOols.trAnslate()
+Endif
+Set Notify On
+*!*	tnId = grEkv
+*!*	If File('buh50viga.log') .And. Used('qryRekv') .And.  .Not.  ;
+*!*			EMPTY(qrYrekv.emAil) .And.  .Not. Empty(Mline(qrYrekv.muUd, 1)) .And.   ;
+*!*			.Not. Isnull(qrYrekv.muUd) .And.  .Not. Empty(config.reServed3)
+*!*		Create Cursor Mail (smTpto C (254), ccList C (254), bcClist C (254),  ;
+*!*			suBject C (50), atTachment C (254), Message M)
+*!*		caTtach = Sys(5)+Sys(2003)+'\buh50viga.log'
+*!*		Insert Into Mail (smTpto, suBject, atTachment) Values  ;
+*!*			(Ltrim(Rtrim(config.reServed3)), 'Raamatupidamine 5.0 Viga',  ;
+*!*			caTtach)
+*!*		Set Classlib To emAil
+*!*		oeMail = Createobject('email')
+*!*		With oeMail
+*!*			.smTpfrom = Ltrim(Rtrim(qrYrekv.emAil))
+*!*			.smTpreply = Ltrim(Rtrim(qrYrekv.emAil))
+*!*			.smTpserver = Ltrim(Rtrim(Mline(qrYrekv.muUd, 1)))
+*!*			leRror = .Send()
+*!*			If leRror=.T.
+*!*				Erase (caTtach)
+*!*			Endif
+*!*		Endwith
+*!*		Use In Mail
+*!*		Release oeMail
+*!*	Endif
+*!*	Set Procedure To
+*!*	Release otOols
+=fQuit(.F.)
+Endproc
+
+Function fQuit
+	Parameters tlQuit
+	If gnHandle>0 .And. gvErsia<>'VFP'
+		= SQLDISCONNECT(gnHandle)
+*		= SQLDISCONNECT(gnHandleasync)
+		gnHandle = 0
+	Endif
+	Set Sysmenu To Default
+*	_Screen.Caption = ccAption
+	_Screen.Picture = ''
+	On Key
+	If tlQuit = .T.
+		Quit
+	Endif
+	Return

@@ -1,0 +1,8 @@
+SCREEN = On
+TALK = OFF
+MULTILOCKS = ON
+EXCLUSIVE = OFF
+SAFETY = OFF
+status bar = off
+CONSOLE=OFF
+ansi=on
